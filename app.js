@@ -3,7 +3,7 @@
  * ????????????: Apps Script-? Deploy ? Access = "Anyone" ????? ???,
  * ????? GitHub Pages ???? fetch ??? ???? ???
  */
-var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiIMPVIThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec URL
+var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiiIMPViThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec';
 
 /* ---------- tiny utils ---------- */
 function el(id){ return document.getElementById(id); }
