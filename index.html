@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B2C4D">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%230B2C4D"/><text x="32" y="42" font-size="28" text-anchor="middle" fill="white" font-family="Arial">G</text></svg>'>
+<link rel="apple-touch-icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%230B2C4D"/><text x="32" y="42" font-size="28" text-anchor="middle" fill="white" font-family="Arial">G</text></svg>'>
+<title>Gazole Block Scheme Proposal App</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="fatalBanner" class="fatal hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<!-- ============ LOGIN ============ -->
+<section id="loginScreen" class="screen active loginwrap">
+  <div class="login-card">
+    <div class="logo-circle"><i class="ic" data-ic="bank"></i></div>
+    <h1>Gazole Block</h1>
+    <p class="sub">Scheme Proposal App &nbsp;|&nbsp; ????? ????</p>
+    <div class="field"><label>Mobile Number</label>
+      <input id="loginMobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="username"></div>
+    <div class="field"><label>PIN</label>
+      <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 digit PIN" autocomplete="current-password"></div>
+    <div id="loginError" class="errline hidden"></div>
+    <button id="loginBtn" class="btn primary block">Login</button>
+    <p class="hint">Don't have a login? Contact your Block admin (BDO office) to be added as a Surveyor.</p>
+  </div>
+</section>
+
+<!-- ============ APP SHELL ============ -->
+<div id="appShell" class="hidden">
+
+  <header class="topbar">
+    <div class="logo-circle small"><i class="ic" data-ic="bank"></i></div>
+    <div class="title" id="appTitle">Gazole Block, Malda</div>
+    <button class="iconbtn hidden" id="btnTopNew" title="New Scheme Entry"><i class="ic" data-ic="plus"></i></button>
+  </header>
+
+  <main id="mainArea">
+
+    <!-- ========== HOME ========== -->
+    <section id="screen-home" class="screen">
+      <div class="welcome">
+        <h2 id="homeWelcome">Welcome</h2>
+        <p id="homeSub">Here is your daily operational overview.</p>
+      </div>
+      <h3 class="sectitle">Quick Actions</h3>
+      <div class="quickgrid">
+        <button class="qaction" id="qaNewEntry"><span class="qicon"><i class="ic" data-ic="plus"></i></span><span>New Scheme Entry</span></button>
+        <button class="qaction" id="qaMyReports"><span class="qicon"><i class="ic" data-ic="doc"></i></span><span>View Reports</span></button>
+        <button class="qaction" id="qaRecent"><span class="qicon"><i class="ic" data-ic="clock"></i></span><span>Recent Submissions</span></button>
+        <button class="qaction" id="qaSync"><span class="qicon"><i class="ic" data-ic="sync"></i><span class="badge hidden" id="syncBadge">0</span></span><span>Sync Data</span><small id="syncLast"></small></button>
+      </div>
+      <div id="adminTools" class="hidden">
+        <h3 class="sectitle">Administrative Tools</h3>
+        <button class="toolrow" id="atAnalytics"><span class="ticon"><i class="ic" data-ic="chart"></i></span><span class="ttext"><b>System Analytics</b><small>View overall performance</small></span></button>
+        <button class="toolrow" id="atUsers"><span class="ticon"><i class="ic" data-ic="users"></i></span><span class="ttext"><b>User Management</b><small>Manage roles &amp; access</small></span></button>
+      </div>
+      <h3 class="sectitle">Quick Stats</h3>
+      <div class="statcol">
+        <div class="statcard accent-navy"><small>Schemes Logged Today</small><b id="qsToday">0</b></div>
+        <div class="statcard accent-orange"><small>Pending Approvals</small><b id="qsPending">0</b></div>
+        <div class="statcard accent-navy"><small>Active Projects</small><b id="qsActive">0</b></div>
+      </div>
+    </section>
+
+    <!-- ========== RECORDS LIST ========== -->
+    <section id="screen-records" class="screen">
+      <div class="searchbar"><i class="ic" data-ic="search"></i>
+        <input id="recSearch" placeholder="Search records by scheme name, GP, or village…"></div>
+      <div class="rowline">
+        <div class="scopes">
+          <button id="scopeAll" class="chip active">All</button>
+          <button id="scopeMine" class="chip">Mine</button>
+        </div>
+        <button class="btn ghost" id="recFilterBtn"><i class="ic" data-ic="filter"></i> Filters</button>
+      </div>
+      <div id="recFilterPanel" class="filterpanel hidden">
+        <div class="grid2">
+          <div class="field"><label>GP</label><select id="fltGp"><option value="">All GPs</option></select></div>
+          <div class="field"><label>Scheme Type</label><select id="fltType"><option value="">All Scheme Types</option></select></div>
+          <div class="field"><label>Status</label><select id="fltStatus"><option value="">All Statuses</option></select></div>
+          <div class="field"><label>Sort</label>
+            <select id="fltSort">
+              <option value="new">Newest First</option>
+              <option value="priority">Priority (do first ? last)</option>
+            </select></div>
+        </div>
+        <div class="rowline">
+          <button class="btn ghost" id="fltClear">Clear Filters</button>
+          <button class="btn ghost" id="fltCsv">? Export CSV</button>
+        </div>
+      </div>
+      <div id="recSummary" class="summary"></div>
+      <div id="recList"></div>
+      <button id="recLoadMore" class="btn ghost block hidden">Load More Records</button>
+    </section>
+
+    <!-- ========== RECORD DETAIL ========== -->
+    <section id="screen-detail" class="screen">
+      <div class="dethead">
+        <button class="iconbtn" id="detBack"><i class="ic" data-ic="back"></i></button>
+        <b id="detId"></b>
+        <button class="iconbtn" id="detMenu"><i class="ic" data-ic="dots"></i></button>
+      </div>
+      <div id="detMenuBox" class="menubox hidden">
+        <button id="detFund"><i class="ic" data-ic="money"></i> Fund &amp; Priority</button>
+        <button id="detDelete" class="danger"><i class="ic" data-ic="trash"></i> Delete Record</button>
+      </div>
+      <div id="detBody"></div>
+      <div class="detactions">
+        <button id="detEdit" class="btn primary block"><i class="ic" data-ic="edit"></i> Edit Record</button>
+        <button id="detPrint" class="btn ghost block"><i class="ic" data-ic="print"></i> Print Report</button>
+      </div>
+    </section>
+
+    <!-- ========== NEW ENTRY / EDIT FORM ========== -->
+    <section id="screen-form" class="screen">
+      <h2 id="formTitle">New Scheme Entry</h2>
+
+      <div class="card"><h3>1. Location Details</h3>
+        <div class="grid2">
+          <div class="field"><label>District</label><input value="Malda" disabled></div>
+          <div class="field"><label>Block</label><input value="Gazole" disabled></div>
+          <div class="field"><label>GP <b class="req">*</b></label><select id="fGp"><option value="">Select…</option></select></div>
+          <div class="field"><label>Village <b class="req">*</b></label><input id="fVillage" placeholder="Type village name"></div>
+          <div class="field"><label>Para / Mahalla</label><input id="fPara" placeholder="Optional"></div>
+        </div>
+      </div>
+
+      <div class="card"><h3>2. Scheme Details</h3>
+        <div class="field"><label>Scheme Type <b class="req">*</b></label><select id="fSchemeType"><option value="">Select…</option></select></div>
+        <div class="grid2 hidden" id="roadFields">
+          <div class="field"><label>Starting Point <b class="req">*</b></label><input id="fStartPoint" placeholder="e.g. Sukumar Mondal's house"></div>
+          <div class="field"><label>End Point <b class="req">*</b></label><input id="fEndPoint" placeholder="e.g. Haren Sarkar's house"></div>
+        </div>
+        <div class="field hidden" id="venueField"><label>Venue / Institution / Location <b class="req">*</b></label><input id="fVenue" placeholder="e.g. Alal FP School"></div>
+        <div class="grid2">
+          <div class="field" id="natureField"><label>Nature of Work <b class="req">*</b></label><select id="fNature"><option value="">Select…</option></select></div>
+          <div class="field hidden" id="natureOtherField"><label>Specify <b class="req">*</b></label><input id="fNatureOther"></div>
+          <div class="field"><label>Estimated Cost (?)</label><input id="fEstCost" inputmode="numeric" placeholder="Optional"></div>
+        </div>
+        <div class="field" id="schemeNameField"><label>Scheme Name</label>
+          <input id="fSchemeName" readonly placeholder="Auto-generated">
+          <small id="schemeNameHint" class="muted">Auto-generated from the details above.</small></div>
+      </div>
+
+      <div class="card"><h3>3. Geo &amp; Photo</h3>
+        <div class="grid2">
+          <div class="field"><label>Latitude <b class="req">*</b></label><input id="fLat" inputmode="decimal"></div>
+          <div class="field"><label>Longitude <b class="req">*</b></label><input id="fLng" inputmode="decimal"></div>
+        </div>
+        <button class="btn ghost" id="btnGeo"><i class="ic" data-ic="pin"></i> Use My Location</button>
+        <div class="field" style="margin-top:10px"><label>Site Photo <b class="req">*</b></label>
+          <button type="button" class="btn ghost" id="btnPhoto" onclick="openPhotoModal()">?? Add Site Photo (Camera / Gallery)</button>
+          <input type="file" id="fPhoto" class="hidden" accept="image/*">
+          <small id="photoNote" class="muted hidden">A photo is already saved for this record. Add a new one only to replace it.</small>
+          <img id="photoPreview" class="hidden" alt="Site photo preview">
+        </div>
+      </div>
+
+      <div class="card"><h3>4. Land Record Details</h3>
+        <div class="grid2">
+          <div class="field"><label>Mouza <b class="req">*</b></label><select id="fMouza"><option value="">Select GP first…</option></select></div>
+          <div class="field"><label>J.L. No. (auto)</label><input id="fJl" readonly placeholder="Auto"></div>
+        </div>
+        <div class="field hidden" id="mouzaManualWrap"><label>Mouza (list-? ????) <b class="req">*</b></label>
+          <input id="fMouzaManual" placeholder="Type mouza name manually"></div>
+        <div class="grid2">
+          <div class="field"><label>Plot No. <b class="req">*</b></label><input id="fPlot" placeholder="Comma-separate if multiple"></div>
+          <div class="field"><label>Khatiyan No.</label><input id="fKhatiyan"></div>
+          <div class="field"><label>Recorded Classification</label><input id="fClassification" list="classList"></div>
+          <div class="field"><label>Owner Name <b class="req">*</b></label><input id="fOwner"></div>
+          <div class="field"><label>Plot Belongs To <b class="req">*</b></label><select id="fLandBelongs"><option value="">Select…</option></select></div>
+        </div>
+        <datalist id="classList"></datalist>
+      </div>
+
+      <div class="card"><h3>5. Beneficiaries</h3>
+        <div class="grid4">
+          <div class="field"><label>SC</label><input id="fBenefSC" inputmode="numeric" placeholder="0"></div>
+          <div class="field"><label>ST</label><input id="fBenefST" inputmode="numeric" placeholder="0"></div>
+          <div class="field"><label>General</label><input id="fBenefGeneral" inputmode="numeric" placeholder="0"></div>
+          <div class="field"><label>Minority</label><input id="fBenefMinority" inputmode="numeric" placeholder="0"></div>
+        </div>
+        <p class="total">Total beneficiaries: <b id="benefTotal">0</b></p>
+      </div>
+
+      <button id="formSave" class="btn primary block">Save Entry</button>
+      <button id="formCancel" class="btn ghost block">Cancel</button>
+    </section>
+
+    <!-- ========== ANALYTICS ========== -->
+    <section id="screen-analytics" class="screen">
+      <div class="card"><h3>Analysis Period</h3>
+        <div class="grid2">
+          <div class="field"><label>From Date</label><input type="date" id="anFrom"></div>
+          <div class="field"><label>To Date</label><input type="date" id="anTo"></div>
+        </div>
+        <button class="btn primary block" id="anApply">Apply Filter</button>
+      </div>
+      <div class="grid2 stats">
+        <div class="statcard accent-navy"><small>Total Schemes</small><b id="anTotal">0</b></div>
+        <div class="statcard accent-navy"><small>Beneficiaries</small><b id="anBenef">0</b></div>
+        <div class="statcard accent-navy"><small>Est. Cost (Cr)</small><b id="anCost">?0</b></div>
+        <div class="statcard accent-red"><small>Pending Approvals</small><b id="anPending">0</b></div>
+      </div>
+      <div class="card"><h3>Scheme Status</h3><div class="donutwrap"><div id="anDonut"></div><div id="anLegend"></div></div></div>
+      <div class="card"><h3>Top GPs by Volume</h3><div id="anTopGps"></div></div>
+      <div class="card"><h3>Top Surveyors</h3>
+        <div class="field"><select id="anGpFilter"><option value="">All Gram Panchayats</option></select></div>
+        <div id="anTopSurveyors"></div>
+      </div>
+      <div class="card"><h3>Recent Submissions</h3><div id="anRecent"></div></div>
+    </section>
+
+    <!-- ========== APPROVALS (Admin) ========== -->
+    <section id="screen-approvals" class="screen">
+      <div id="apprSummary" class="summary"></div>
+      <div id="apprList"></div>
+    </section>
+
+    <!-- ========== USER MANAGEMENT (Admin) ========== -->
+    <section id="screen-users" class="screen">
+      <button class="btn primary block" id="btnAddUser"><i class="ic" data-ic="plus"></i> Add New Login</button>
+      <div id="userList"></div>
+    </section>
+
+    <!-- ========== RESET PIN (Admin) ========== -->
+    <section id="screen-resetpin" class="screen">
+      <button class="backlink" id="rpBack"><i class="ic" data-ic="back"></i> Back to User Management</button>
+      <div class="card usercard accent">
+        <div class="avatar" id="rpAvatar">–</div>
+        <div class="ucol"><b id="rpName"></b><small id="rpRole"></small><small id="rpMobile"></small>
+          <span class="pill green" id="rpStatus">ACTIVE</span></div>
+      </div>
+      <div class="note">Resetting the PIN will immediately invalidate the current PIN. The user must use the new PIN on their next login attempt via the mobile application.</div>
+      <div class="card">
+        <h3><i class="ic" data-ic="lock"></i> Authentication Details</h3>
+        <p class="muted">Enter a new 4 to 6 digit secure PIN for this user.</p>
+        <div class="field"><label>New PIN</label>
+          <div class="pinrow"><input id="rpPin1" type="password" inputmode="numeric" maxlength="6" placeholder="Enter 4-6 digits">
+          <button class="iconbtn" id="rpEye"><i class="ic" data-ic="eyeoff"></i></button></div>
+          <small class="muted">Must be exactly 4 to 6 numbers.</small></div>
+        <div class="field"><label>Confirm New PIN</label><input id="rpPin2" type="password" inputmode="numeric" maxlength="6" placeholder="Re-enter PIN"></div>
+        <button class="btn primary block" id="rpSave"><i class="ic" data-ic="check"></i> Confirm &amp; Reset PIN</button>
+      </div>
+    </section>
+
+    <!-- ========== PROFILE ========== -->
+    <section id="screen-profile" class="screen">
+      <div class="card usercard accent">
+        <div class="avatar" id="pfAvatar">–</div>
+        <div class="ucol"><b id="pfName"></b><small id="pfRole"></small><small id="pfMobile"></small></div>
+      </div>
+      <button class="btn ghost block" id="pfSync"><i class="ic" data-ic="sync"></i> Sync Data</button>
+      <div id="pfAdminBox" class="hidden">
+        <div class="card"><h3>Data Location (Admin)</h3>
+          <p class="muted">Data: <a id="pfSheetLink" href="#" target="_blank">Sheet</a> · Photos: <a id="pfFolderLink" href="#" target="_blank">Drive folder</a></p>
+          <div class="field"><label>Wrong data showing? Connect a different Sheet</label>
+            <input id="pfConnectUrl" placeholder="Paste Sheet URL or ID"></div>
+          <button class="btn primary block" id="pfConnectBtn">Connect</button>
+        </div>
+      </div>
+      <button class="btn danger block" id="pfLogout"><i class="ic" data-ic="logout"></i> Logout</button>
+      <p class="hint center">Gazole Scheme Proposal App · v4</p>
+    </section>
+
+  </main>
+
+  <!-- ========== BOTTOM NAV ========== -->
+  <nav id="bottomNav" class="bottomnav">
+    <button data-nav="home" id="navHome" class="active"><i class="ic" data-ic="home"></i><span>Dashboard</span></button>
+    <button data-nav="records" id="navRecords"><i class="ic" data-ic="doc"></i><span id="navRecordsLabel">My Reports</span></button>
+    <button data-nav="approvals" id="navApprovals" class="hidden"><i class="ic" data-ic="check"></i><span>Approvals</span></button>
+    <button data-nav="profile" id="navProfile"><i class="ic" data-ic="person"></i><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- ========== MODALS ========== -->
+<div id="modalAddUser" class="modal hidden"><div class="modal-card">
+  <div class="mhead"><b>Add New Login</b><button class="iconbtn" data-close="modalAddUser">×</button></div>
+  <div class="field"><label>Role <b class="req">*</b></label><select id="auRole"><option>Surveyor</option><option>MLA</option></select></div>
+  <div class="field"><label>Mobile Number <b class="req">*</b></label><input id="auMobile" maxlength="10" inputmode="numeric"></div>
+  <div class="field"><label>PIN <b class="req">*</b></label><input id="auPin" maxlength="6" inputmode="numeric"></div>
+  <div class="field"><label>Name <b class="req">*</b></label><input id="auName"></div>
+  <button class="btn primary block" id="auSave">+ Create Login</button>
+</div></div>
+
+<div id="modalEditUser" class="modal hidden"><div class="modal-card">
+  <div class="mhead"><b>Edit Login</b><button class="iconbtn" data-close="modalEditUser">×</button></div>
+  <div class="field"><label>Mobile</label><input id="euMobile" disabled></div>
+  <div class="field"><label>Name</label><input id="euName"></div>
+  <div class="field"><label>Status</label><select id="euStatus"><option>Active</option><option>Inactive</option></select></div>
+  <button class="btn primary block" id="euSave">Save Changes</button>
+  <button class="btn ghost block" id="euResetPin">Reset PIN</button>
+</div></div>
+
+<div id="modalFund" class="modal hidden"><div class="modal-card">
+  <div class="mhead"><b>Assign Fund &amp; Priority</b><button class="iconbtn" data-close="modalFund">×</button></div>
+  <div class="field"><label>Fund Type</label><select id="fdType"><option value="">—</option></select></div>
+  <div class="field"><label>Fund Amount (?)</label><input id="fdAmount" inputmode="numeric"></div>
+  <div class="field"><label>Priority (1 = do first, blank = not prioritized)</label><input id="fdPriority" inputmode="numeric"></div>
+  <button class="btn primary block" id="fdSave">Save</button>
+</div></div>
+
+<!-- ========== PHOTO CAPTURE POPUP ========== -->
+<div id="modalPhoto" class="modal hidden"><div class="modal-card">
+  <div class="mhead"><b>?? Site Photo</b><button class="iconbtn" onclick="closePhotoModal()">×</button></div>
+  <div id="pcChoose" class="pc-choose">
+    <button class="btn primary" onclick="pcStartCamera()">?? Camera</button>
+    <button class="btn ghost" onclick="pcPickGallery()">?? Upload from Gallery</button>
+    <p class="muted center pc-hint">Camera ????? page-?? ?????? camera ????? — page refresh ??? ???</p>
+  </div>
+  <div id="pcCamWrap" class="hidden">
+    <video id="pcVideo" autoplay playsinline muted></video>
+    <div class="pc-cambtns"><button class="btn primary" onclick="pcCapture()">?</button></div>
+  </div>
+  <div id="pcPreviewWrap" class="hidden">
+    <img id="pcPreview" alt="Photo preview">
+    <div class="pc-okbtns">
+      <button class="btn ghost" onclick="pcRetake()">? Retake</button>
+      <button class="btn primary" onclick="pcUsePhoto()">? OK – Use Photo</button>
+    </div>
+  </div>
+  <input type="file" id="pcFile" accept="image/*" class="hidden">
+  <input type="file" id="pcCamFallback" accept="image/*" capture="environment" class="hidden">
+</div></div>
+<canvas id="pcCanvas" class="hidden"></canvas>
+
+<div id="printArea" class="hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
