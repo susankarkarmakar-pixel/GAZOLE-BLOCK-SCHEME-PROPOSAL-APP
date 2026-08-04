@@ -1,9 +1,9 @@
-/* ============ GAZOLE SCHEME PROPOSAL APP - app.js (GitHub Pages version) ============
+﻿/* ============ GAZOLE SCHEME PROPOSAL APP - app.js (GitHub Pages version) ============
  * Backend = ????? Apps Script deployment (Code.gs v4.3)?
  * ????????????: Apps Script-? Deploy ? Access = "Anyone" ????? ???,
  * ????? GitHub Pages ???? fetch ??? ???? ???
  */
-var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiiIMPViThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiIMPVIThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec'; // ? ????? /exec URL
 
 /* ---------- tiny utils ---------- */
 function el(id){ return document.getElementById(id); }
