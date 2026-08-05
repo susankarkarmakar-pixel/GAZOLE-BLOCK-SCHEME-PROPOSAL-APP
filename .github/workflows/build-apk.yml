@@ -1,21 +1,55 @@
 name: Build Android APK
+
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
-      - name: Prepare Capacitor
+
+      - name: Prepare Capacitor project
+        run: |
+          npm init -y
+          npm pkg set name=gazole-scheme version=1.0.0
+          npm install @capacitor/core@6
+          npm install -D @capacitor/cli@6
+          mkdir -p www
+          cp index.html styles.css app.js offline.js www/
+          npx cap init "Gazole Scheme" com.gazole.scheme --web-dir www
+          npm install @capacitor/android@6
+          npx cap add android
+
+      - name: Add Android permissions
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          if ! grep -q "permission.CAMERA" "$M"; then
+            sed -i 's|<application|<uses-permission android:name="android.permission.CAMERA" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <application|' "$M"
+          fi
+
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gazole-Scheme-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
