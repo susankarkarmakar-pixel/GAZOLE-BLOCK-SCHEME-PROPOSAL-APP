@@ -1,9 +1,8 @@
-﻿/* ============ GAZOLE SCHEME PROPOSAL APP - app.js (GitHub Pages version) ============
- * Backend = ????? Apps Script deployment (Code.gs v4.3)?
- * ????????????: Apps Script-? Deploy ? Access = "Anyone" ????? ???,
- * ????? GitHub Pages ???? fetch ??? ???? ???
+/* ============ GAZOLE SCHEME PROPOSAL APP - app.js (GitHub Pages version) ============
+ * Backend = your Apps Script deployment (Code.gs v4.3).
+ * This file is pure English/ASCII so it can never get garbled again.
  */
-var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiIMPVIThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec'; // ? ????? /exec URL
+var API_URL = 'https://script.google.com/macros/s/AKfycbxk48y9isiIMPVIThTrh4boN4o37Io3L-54azngm6AaynGx7OFuREu0a-XR2HaZVqBp2g/exec';
 
 /* ---------- tiny utils ---------- */
 function el(id){ return document.getElementById(id); }
@@ -28,7 +27,7 @@ var photoB64 = null, photoMime = null, photoName = null;
 var recVisible = 10;
 var recState = { q:'', gp:'', type:'', status:'', sort:'new', scope:'all' };
 
-/* ---------- server bridge (fetch ? Apps Script doPost) ---------- */
+/* ---------- server bridge (fetch to Apps Script doPost) ---------- */
 function call(fn){
   var args = Array.prototype.slice.call(arguments, 1);
   return fetch(API_URL, {
@@ -37,7 +36,7 @@ function call(fn){
     body: JSON.stringify({ fn: fn, args: args })
   }).then(function(r){ return r.json(); }).then(function(res){
     if (res === null || res === undefined) {
-      res = { error: 'Server-? ???? response — deployment "Anyone" access ??? ???? ??????' };
+      res = { error: 'Empty server response. Redeploy Apps Script with New version and access "Anyone".' };
     }
     if (res && res.error === 'SESSION_EXPIRED'){ sessionExpired(); throw new Error('SESSION_EXPIRED'); }
     return res;
@@ -48,7 +47,7 @@ function sessionExpired(){
   el('appShell').classList.add('hidden');
   el('loginScreen').classList.remove('hidden');
   el('loginScreen').classList.add('active');
-  toast('Session expired — please login again.');
+  toast('Session expired - please login again.');
 }
 
 /* ---------- toast / fatal ---------- */
@@ -58,7 +57,7 @@ function toast(msg){
   clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.add('hidden'); }, 3000);
 }
 function showFatal(msg){
-  var f = el('fatalBanner'); f.innerText = '? ' + msg; f.classList.remove('hidden');
+  var f = el('fatalBanner'); f.innerText = msg; f.classList.remove('hidden');
 }
 window.onerror = function(msg){ showFatal(String(msg)); };
 
@@ -129,7 +128,7 @@ function driveThumb(url, w){
 }
 function initials(name){
   var parts = String(name || '').trim().split(/\s+/);
-  return ((parts[0]||'').charAt(0) + (parts[1]||'').charAt(0)).toUpperCase() || '–';
+  return ((parts[0]||'').charAt(0) + (parts[1]||'').charAt(0)).toUpperCase() || '-';
 }
 var AVCOLORS = [['#DCE7F5','#0B2C4D'],['#FCE4CC','#B05C10'],['#E5F5EC','#1B7F4D'],['#FBE9E7','#C0392B'],['#EFE6F7','#6B21A8']];
 function avColor(name){ var h = 0, s = String(name||''); for (var i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) % 997; return AVCOLORS[h % AVCOLORS.length]; }
@@ -157,7 +156,7 @@ function doLogin(){
   el('loginError').classList.add('hidden');
   if (!/^\d{10}$/.test(m)){ loginErr('Enter a valid 10-digit mobile number.'); return; }
   if (!/^\d{4,6}$/.test(p)){ loginErr('PIN must be 4-6 digits.'); return; }
-  el('loginBtn').disabled = true; el('loginBtn').innerText = 'Logging in…';
+  el('loginBtn').disabled = true; el('loginBtn').innerText = 'Logging in...';
   call('login', m, p).then(function(res){
     el('loginBtn').disabled = false; el('loginBtn').innerText = 'Login';
     if (res.success){
@@ -178,7 +177,7 @@ function boot(){
     call('getConfig').then(function(c){ if (c && c.gpList) CONFIG = c; }).catch(function(){}),
     call('getMouzaList').then(function(m){ if (m && m.mouzas) MOUZA_LIST = m.mouzas; }).catch(function(){})
   ]).then(function(){
-    if (!CONFIG){ showFatal('Config load ????? — app.js-? API_URL ??? ??? ???? ??? deployment access "Anyone" ???? ??????'); return; }
+    if (!CONFIG){ showFatal('Config not loaded. Check API_URL in app.js and that the deployment access is "Anyone".'); return; }
     if (!TOKEN) return;
     call('whoAmI', TOKEN).then(function(res){
       if (res && res.success){ USER = res.user; enterApp(); }
@@ -207,12 +206,12 @@ function enterApp(){
 }
 
 function populateStaticSelects(){
-  fillSelect(el('fGp'), CONFIG.gpList, 'Select…');
-  el('fSchemeType').innerHTML = '<option value="">Select…</option>' + CONFIG.schemeTypes.map(function(t){
+  fillSelect(el('fGp'), CONFIG.gpList, 'Select...');
+  el('fSchemeType').innerHTML = '<option value="">Select...</option>' + CONFIG.schemeTypes.map(function(t){
     return '<option value="' + t.code + '">' + esc(t.label) + '</option>';
   }).join('');
-  fillSelect(el('fNature'), CONFIG.natureOfWorkOptions, 'Select…');
-  el('fLandBelongs').innerHTML = '<option value="">Select…</option>' + CONFIG.landBelongsTo.map(function(l){
+  fillSelect(el('fNature'), CONFIG.natureOfWorkOptions, 'Select...');
+  el('fLandBelongs').innerHTML = '<option value="">Select...</option>' + CONFIG.landBelongsTo.map(function(l){
     return '<option value="' + l.code + '">' + esc(l.label) + '</option>';
   }).join('');
   el('classList').innerHTML = CONFIG.classificationSuggestions.map(function(c){ return '<option value="' + esc(c) + '">'; }).join('');
@@ -222,12 +221,12 @@ function populateStaticSelects(){
   }).join('');
   fillSelect(el('fltStatus'), CONFIG.statuses || ['Pending Review','Active','In Progress','Completed'], 'All Statuses');
   fillSelect(el('anGpFilter'), CONFIG.gpList, 'All Gram Panchayats');
-  el('fdType').innerHTML = '<option value="">—</option>' + CONFIG.fundTypes.map(function(f){
+  el('fdType').innerHTML = '<option value="">-</option>' + CONFIG.fundTypes.map(function(f){
     return '<option value="' + esc(f) + '">' + esc(f) + '</option>';
   }).join('');
 }
 function fillSelect(sel, items, first){
-  sel.innerHTML = '<option value="">' + esc(first || 'Select…') + '</option>' + items.map(function(x){
+  sel.innerHTML = '<option value="">' + esc(first || 'Select...') + '</option>' + items.map(function(x){
     return '<option value="' + esc(x) + '">' + esc(x) + '</option>';
   }).join('');
 }
@@ -248,7 +247,7 @@ function loadRecords(initial){
       storeSet('gzl_last_sync', String(Date.now()));
       el('syncBadge').classList.add('hidden');
       el('syncLast').innerText = 'Last synced: just now';
-      toast('Data synced ?');
+      toast('Data synced.');
     }
     if (PENDING_DETAIL){
       var id = PENDING_DETAIL; PENDING_DETAIL = null;
@@ -317,7 +316,7 @@ function renderRecords(){
   var list = filteredRecords();
   var todayCount = 0, tstr = new Date().toDateString();
   list.forEach(function(r){ if (dParse(r.createdAt).toDateString() === tstr) todayCount++; });
-  el('recSummary').innerText = list.length + ' record' + (list.length===1?'':'s') + ' · ' + todayCount + ' today';
+  el('recSummary').innerText = list.length + ' record' + (list.length===1?'':'s') + ' - ' + todayCount + ' today';
   var box = el('recList');
   if (!list.length){ box.innerHTML = '<div class="card center muted">No records found.</div>'; el('recLoadMore').classList.add('hidden'); return; }
   var html = '', lastLabel = null, shown = Math.min(recVisible, list.length);
@@ -338,22 +337,22 @@ function recordCard(r){
   var img = thumb ? '<img class="lc-photo" data-fb="1" src="' + thumb + '" alt="">' :
     '<div class="lc-photo empty"><span class="ic"><svg viewBox="0 0 24 24"><path d="' + ICONS.camera + '"/></svg></span></div>';
   var fund = (r.priority !== '' || r.fundType) ?
-    '<div class="lc-fund">?? ' + (r.priority !== '' ? ('Priority ' + esc(r.priority)) : '') +
-    (r.priority !== '' && r.fundType ? ' · ' : '') + (r.fundType ? esc(r.fundType) : '') + '</div>' : '';
-  var actions = '<div class="lc-actions"><button class="lc-btn" onclick="openDetail(\'' + r.id + '\')">View Details ?</button>' +
+    '<div class="lc-fund">Fund: ' + (r.priority !== '' ? ('Priority ' + esc(r.priority)) : '') +
+    (r.priority !== '' && r.fundType ? ' - ' : '') + (r.fundType ? esc(r.fundType) : '') + '</div>' : '';
+  var actions = '<div class="lc-actions"><button class="lc-btn" onclick="openDetail(\'' + r.id + '\')">View Details</button>' +
     '<button class="lc-btn" onclick="openForm(\'' + r.id + '\')">Edit</button></div>';
   return '<div class="listcard">' + img +
     '<div class="lc-body"><div class="lc-top"><b class="lc-title">' + esc(r.schemeName || r.id) + '</b>' +
-    '<span class="pill ' + statusPill(r.status) + '">' + esc(r.status || '—') + '</span></div>' +
-    '<div class="lc-meta"><span>?? ' + esc(r.gp) + ' GP</span><span>?? ' + esc(r.enteredByName || '—') + '</span></div>' +
-    '<div class="lc-meta"><span>?? ' + fmtDate(r.createdAt) + ' • ' + fmtTime(r.createdAt) + '</span></div>' +
+    '<span class="pill ' + statusPill(r.status) + '">' + esc(r.status || '-') + '</span></div>' +
+    '<div class="lc-meta"><span>' + esc(r.gp) + ' GP</span><span>by ' + esc(r.enteredByName || '-') + '</span></div>' +
+    '<div class="lc-meta"><span>' + fmtDate(r.createdAt) + ' ' + fmtTime(r.createdAt) + '</span></div>' +
     fund + actions + '</div></div>';
 }
 function attachImgFallbacks(root){
   var imgs = root.querySelectorAll('img[data-fb]');
   for (var i=0;i<imgs.length;i++){
     imgs[i].onerror = (function(img){ return function(){
-      var d = document.createElement('div'); d.className = 'lc-photo empty'; d.innerText = '??';
+      var d = document.createElement('div'); d.className = 'lc-photo empty'; d.innerText = 'No photo';
       img.parentNode.replaceChild(d, img);
     }; })(imgs[i]);
   }
@@ -374,21 +373,21 @@ function renderDetail(id){
   show('detFund', canFund);
   var thumb = driveThumb(r.photoUrl, 800);
   var html = '';
-  if (thumb) html += '<div class="dphoto-wrap"><img class="dphoto" src="' + thumb + '"><span class="phototag">?? Site Photo</span></div>';
+  if (thumb) html += '<div class="dphoto-wrap"><img class="dphoto" src="' + thumb + '"><span class="phototag">Site Photo</span></div>';
   html += '<div class="card"><div class="dlabel">Scheme Proposal</div>' +
     '<div class="dtitle">' + esc(r.schemeName || r.id) + '</div>' +
-    '<span class="pill ' + statusPill(r.status) + '">' + esc(r.status || '—') + '</span>' +
+    '<span class="pill ' + statusPill(r.status) + '">' + esc(r.status || '-') + '</span>' +
     '<div class="drow"><span class="dicon"><i class="ic" data-ic="bank"></i></span><span class="dtext"><small>Gram Panchayat</small><b>' + esc(r.gp) + '</b></span></div>' +
     '<div class="drow"><span class="dicon"><i class="ic" data-ic="home"></i></span><span class="dtext"><small>Village / Sansad</small><b>' + esc(r.village) + (r.para ? ' (' + esc(r.para) + ')' : '') + '</b></span></div></div>';
   html += '<div class="card"><div class="drow"><span class="dicon"><i class="ic" data-ic="edit"></i></span><span class="dtext"><small>Nature of Work</small><b>' + esc(r.natureOfWork) + (r.natureOfWorkOther ? ' (' + esc(r.natureOfWorkOther) + ')' : '') + '</b></span></div>' +
     '<div class="drow"><span class="dicon"><i class="ic" data-ic="doc"></i></span><span class="dtext"><small>Scheme Type</small><b>' + esc(typeLabel(r.schemeType)) + '</b></span></div>' +
-    (r.estimatedCost !== '' && r.estimatedCost !== undefined ? '<div class="drow"><span class="dicon"><i class="ic" data-ic="money"></i></span><span class="dtext"><small>Estimated Cost</small><b>?' + Number(r.estimatedCost).toLocaleString('en-IN') + '</b></span></div>' : '') + '</div>';
-  html += '<div class="card"><h3>?? Land Records</h3><div class="dgrid">' +
+    (r.estimatedCost !== '' && r.estimatedCost !== undefined ? '<div class="drow"><span class="dicon"><i class="ic" data-ic="money"></i></span><span class="dtext"><small>Estimated Cost</small><b>Rs. ' + Number(r.estimatedCost).toLocaleString('en-IN') + '</b></span></div>' : '') + '</div>';
+  html += '<div class="card"><h3>Land Records</h3><div class="dgrid">' +
     dcell('Mouza & JL', r.mouzaJl) + dcell('Plot No.', r.plotNo) +
-    dcell('Khatiyan', r.khatiyan || '—') + dcell('Owner', r.ownerName) +
-    dcell('Classification', r.classification || '—') + dcell('Land Belongs To', r.landBelongsTo) +
+    dcell('Khatiyan', r.khatiyan || '-') + dcell('Owner', r.ownerName) +
+    dcell('Classification', r.classification || '-') + dcell('Land Belongs To', r.landBelongsTo) +
     '</div></div>';
-  html += '<div class="card"><div class="benwrap"><h3 style="margin:0">?? Target Beneficiaries</h3>' +
+  html += '<div class="card"><div class="benwrap"><h3 style="margin:0">Target Beneficiaries</h3>' +
     '<span class="bentotal"><small>Total:</small> ' + Number(r.totalBenef || 0).toLocaleString('en-IN') + '</span></div>' +
     '<div class="bengrid">' +
     '<div class="bencell"><small>SC</small><b>' + (r.benefSC||0) + '</b></div>' +
@@ -396,23 +395,23 @@ function renderDetail(id){
     '<div class="bencell"><small>Minority</small><b>' + (r.benefMinority||0) + '</b></div>' +
     '<div class="bencell"><small>General</small><b>' + (r.benefGeneral||0) + '</b></div>' +
     '</div></div>';
-  html += '<div class="card"><h3>?? Location & GPS</h3><div class="mapbox">' + mapSvg(r) +
-    '<div class="mrow"><span>Start Point</span><b>' + esc(r.startPoint || r.lat || '—') + '</b></div>' +
-    '<div class="mrow"><span>End Point / Venue</span><b>' + esc(r.endPoint || r.venue || '—') + '</b></div>' +
+  html += '<div class="card"><h3>Location & GPS</h3><div class="mapbox">' + mapSvg(r) +
+    '<div class="mrow"><span>Start Point</span><b>' + esc(r.startPoint || r.lat || '-') + '</b></div>' +
+    '<div class="mrow"><span>End Point / Venue</span><b>' + esc(r.endPoint || r.venue || '-') + '</b></div>' +
     '<div class="mrow"><span>Coordinates</span><b>' + esc(r.lat) + ', ' + esc(r.lng) + '</b></div>' +
-    '</div><p style="margin-top:8px"><a target="_blank" href="https://maps.google.com/?q=' + esc(r.lat) + ',' + esc(r.lng) + '">Open in Google Maps ?</a></p></div>';
+    '</div><p style="margin-top:8px"><a target="_blank" href="https://maps.google.com/?q=' + esc(r.lat) + ',' + esc(r.lng) + '">Open in Google Maps</a></p></div>';
   html += '<div class="card"><div class="metatitle">Record Metadata</div>' +
-    '<div class="drow"><span class="dicon"><i class="ic" data-ic="person"></i></span><span class="dtext"><small>Entered By</small><b>' + esc(r.enteredByName) + ' · ' + esc(r.enteredByMobile) + '</b></span></div>' +
-    '<div class="drow"><span class="dicon"><i class="ic" data-ic="clock"></i></span><span class="dtext"><small>Created / Updated</small><b>' + fmtDate(r.createdAt) + ' ' + fmtTime(r.createdAt) + ' · up. ' + fmtDate(r.updatedAt) + '</b></span></div>' +
+    '<div class="drow"><span class="dicon"><i class="ic" data-ic="person"></i></span><span class="dtext"><small>Entered By</small><b>' + esc(r.enteredByName) + ' - ' + esc(r.enteredByMobile) + '</b></span></div>' +
+    '<div class="drow"><span class="dicon"><i class="ic" data-ic="clock"></i></span><span class="dtext"><small>Created / Updated</small><b>' + fmtDate(r.createdAt) + ' ' + fmtTime(r.createdAt) + ' - up. ' + fmtDate(r.updatedAt) + '</b></span></div>' +
     ((r.fundType || r.priority !== '' || r.fundAmount !== '') ?
       '<div class="drow"><span class="dicon"><i class="ic" data-ic="money"></i></span><span class="dtext"><small>Fund / Priority</small><b>' +
-      esc(r.fundType || '—') + (r.fundAmount !== '' ? ' · ?' + Number(r.fundAmount).toLocaleString('en-IN') : '') +
-      (r.priority !== '' ? ' · Priority ' + esc(r.priority) : '') + '</b></span></div>' : '') +
+      esc(r.fundType || '-') + (r.fundAmount !== '' && r.fundAmount !== undefined ? ' - Rs. ' + Number(r.fundAmount).toLocaleString('en-IN') : '') +
+      (r.priority !== '' && r.priority !== undefined ? ' - Priority ' + esc(r.priority) : '') + '</b></span></div>' : '') +
     '</div>';
   el('detBody').innerHTML = html;
   paintIcons();
 }
-function dcell(l, v){ return '<div class="dcell"><small>' + esc(l) + '</small><b>' + esc(v || '—') + '</b></div>'; }
+function dcell(l, v){ return '<div class="dcell"><small>' + esc(l) + '</small><b>' + esc(v || '-') + '</b></div>'; }
 function typeLabel(code){
   if (!CONFIG) return code;
   for (var i=0;i<CONFIG.schemeTypes.length;i++) if (CONFIG.schemeTypes[i].code === code) return CONFIG.schemeTypes[i].label;
@@ -441,19 +440,19 @@ function renderApprovals(){
   pend.forEach(function(r){
     html += '<div class="listcard"><div class="lc-body">' +
       '<div class="lc-top"><b class="lc-title">' + esc(r.schemeName || r.id) + '</b><span class="pill amber">Pending Review</span></div>' +
-      '<div class="lc-meta"><span>?? ' + esc(r.gp) + ' GP</span><span>?? ' + esc(r.enteredByName) + '</span><span>?? ' + fmtDate(r.createdAt) + '</span></div>' +
+      '<div class="lc-meta"><span>' + esc(r.gp) + ' GP</span><span>by ' + esc(r.enteredByName) + '</span><span>' + fmtDate(r.createdAt) + '</span></div>' +
       '<div class="lc-actions">' +
       '<button class="lc-btn" onclick="openDetail(\'' + r.id + '\')">View</button>' +
-      '<button class="lc-btn" onclick="setStatus(\'' + r.id + '\',\'Active\')">? Approve</button>' +
-      '<button class="lc-btn" onclick="setStatus(\'' + r.id + '\',\'In Progress\')">? In Progress</button>' +
+      '<button class="lc-btn" onclick="setStatus(\'' + r.id + '\',\'Active\')">Approve</button>' +
+      '<button class="lc-btn" onclick="setStatus(\'' + r.id + '\',\'In Progress\')">In Progress</button>' +
       '</div></div></div>';
   });
   box.innerHTML = html;
 }
 function setStatus(id, status){
-  toast('Updating…');
+  toast('Updating...');
   call('updateStatus', TOKEN, id, status).then(function(res){
-    if (res.success){ toast(id + ' ? ' + status); loadRecords(false); }
+    if (res.success){ toast(id + ' is now ' + status); loadRecords(false); }
     else toast(res.error || 'Failed.');
   }).catch(function(e){ toast(e.message); });
 }
@@ -468,12 +467,12 @@ function mouzasForGp(gp){
 function refreshMouzaOptions(){
   var sel = el('fMouza'), gp = getGpValue();
   var list = mouzasForGp(gp);
-  var html = !gp ? '<option value="">Select GP first…</option>'
-    : (list.length ? '<option value="">Select mouza…</option>' : '<option value="">No mouza list for this GP</option>');
+  var html = !gp ? '<option value="">Select GP first...</option>'
+    : (list.length ? '<option value="">Select mouza...</option>' : '<option value="">No mouza list for this GP</option>');
   list.forEach(function(m){
-    html += '<option value="' + esc(m.mouza) + '">' + esc(m.mouza) + '  (JL ' + (m.jl || '–') + ')</option>';
+    html += '<option value="' + esc(m.mouza) + '">' + esc(m.mouza) + ' (JL ' + (m.jl || '-') + ')</option>';
   });
-  html += '<option value="__manual__">Not in list – type manually</option>';
+  html += '<option value="__manual__">Not in list - type manually</option>';
   sel.innerHTML = html;
   onMouzaChange();
 }
@@ -542,7 +541,7 @@ function openForm(id){
   el('fBenefGeneral').value = r ? (r.benefGeneral || '') : '';
   el('fBenefMinority').value = r ? (r.benefMinority || '') : '';
   if (r){ setMouzaFromRecord(r); show('photoNote', !!r.photoUrl); }
-  else { el('fMouza').innerHTML = '<option value="">Select GP first…</option>'; el('fJl').value = ''; show('mouzaManualWrap', false); }
+  else { el('fMouza').innerHTML = '<option value="">Select GP first...</option>'; el('fJl').value = ''; show('mouzaManualWrap', false); }
   onSchemeTypeChange();
   onNatureChange();
   updateBenefTotal();
@@ -573,7 +572,7 @@ function onSchemeTypeChange(){
   var nameInput = el('fSchemeName');
   if (isOther){
     nameInput.readOnly = false;
-    el('schemeNameHint').innerText = 'You selected "Other" – type the Scheme Name yourself. *';
+    el('schemeNameHint').innerText = 'You selected "Other" - type the Scheme Name yourself. *';
   } else {
     nameInput.readOnly = true;
     el('schemeNameHint').innerText = 'Auto-generated from the details above.';
@@ -643,12 +642,12 @@ function saveForm(){
   if (!formRequiredOk()){ toast('Please fill all mandatory (*) fields.'); return; }
   var fd = collectForm();
   var savedId = EDIT_ID;
-  el('formSave').disabled = true; el('formSave').innerText = 'Saving…';
+  el('formSave').disabled = true; el('formSave').innerText = 'Saving...';
   var p = EDIT_ID ? call('updateScheme', TOKEN, EDIT_ID, fd) : call('addScheme', TOKEN, fd);
   p.then(function(res){
     el('formSave').disabled = false; el('formSave').innerText = 'Save Entry';
     if (res.success){
-      toast('Saved ? ' + (res.id || savedId || ''));
+      toast('Saved. ' + (res.id || savedId || ''));
       pcClearDraft();
       PENDING_DETAIL = savedId || res.id;
       EDIT_ID = null;
@@ -668,7 +667,7 @@ function useGeo(){
     el('fLat').value = pos.coords.latitude.toFixed(6);
     el('fLng').value = pos.coords.longitude.toFixed(6);
     el('btnGeo').disabled = false; updateSaveState(); pcSaveDraft();
-    toast('Location captured ?');
+    toast('Location captured.');
   }, function(err){
     el('btnGeo').disabled = false;
     toast('Could not get location: ' + err.message);
@@ -695,7 +694,7 @@ function pcShow(id){
 }
 function pcStartCamera(){
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    toast('In-page camera not supported — opening camera app…');
+    toast('In-page camera not supported - opening camera app...');
     el('pcCamFallback').click();
     return;
   }
@@ -706,7 +705,7 @@ function pcStartCamera(){
       pcShow('pcCamWrap');
     })
     .catch(function(err){
-      toast('Camera permission not available — opening camera app…');
+      toast('Camera permission not available - opening camera app...');
       el('pcCamFallback').click();
     });
 }
@@ -715,7 +714,7 @@ function pcStopCamera(){
 }
 function pcCapture(){
   var v = el('pcVideo');
-  if (!v.videoWidth){ toast('Camera is warming up — try again.'); return; }
+  if (!v.videoWidth){ toast('Camera is warming up - try again.'); return; }
   var c = el('pcCanvas');
   var max = 1280;
   var sc = Math.min(1, max / Math.max(v.videoWidth, v.videoHeight));
@@ -758,7 +757,7 @@ function pcUsePhoto(){
   updateSaveState();
   pcSaveDraft();
   closePhotoModal();
-  toast('Photo added ?');
+  toast('Photo added.');
 }
 
 /* ---------- draft auto-save ---------- */
@@ -801,7 +800,7 @@ function pcRestoreDraft(){
     if (d.fJl) el('fJl').value = d.fJl;
     updateBenefTotal();
     updateSaveState();
-    toast('Unsaved form restored ?');
+    toast('Unsaved form restored.');
   } catch(e){}
 }
 
@@ -825,7 +824,7 @@ function renderAnalytics(){
   });
   el('anTotal').innerText = total.toLocaleString('en-IN');
   el('anBenef').innerText = (benef >= 1000 ? Math.round(benef/1000) + 'K+' : benef);
-  el('anCost').innerText = '?' + (cost/10000000).toFixed(1);
+  el('anCost').innerText = 'Rs. ' + (cost/10000000).toFixed(1) + ' Cr';
   el('anPending').innerText = pending;
   var counts = { 'Active':0, 'In Progress':0, 'Completed':0, 'Pending Review':0 };
   list.forEach(function(r){ if (counts.hasOwnProperty(r.status)) counts[r.status]++; });
@@ -851,7 +850,7 @@ function renderAnalytics(){
   var recent = list.slice(0,5);
   el('anRecent').innerHTML = recent.length ? recent.map(function(r){
     return '<div class="srow"><span class="ricon"><i class="ic" data-ic="doc"></i></span>' +
-      '<span class="sname"><b>' + esc(r.schemeName || r.id) + '</b><small>Submitted by ' + esc(r.enteredByName) + ' • ' + timeAgo(r.createdAt) + '</small></span>' +
+      '<span class="sname"><b>' + esc(r.schemeName || r.id) + '</b><small>Submitted by ' + esc(r.enteredByName) + ' - ' + timeAgo(r.createdAt) + '</small></span>' +
       '<span class="pill ' + statusPill(r.status) + '">' + esc(r.status) + '</span></div>';
   }).join('') : '<p class="muted">No submissions.</p>';
   paintIcons();
@@ -897,7 +896,7 @@ function loadUsers(){
     (res.users || []).forEach(function(u){
       var col = avColor(u.name);
       html += '<div class="userrow"><span class="savatar" style="background:' + col[0] + ';color:' + col[1] + '">' + initials(u.name) + '</span>' +
-        '<span class="ur-col"><b>' + esc(u.name) + '</b><small>' + esc(u.mobile) + ' · ' + esc(u.role) + '</small>' +
+        '<span class="ur-col"><b>' + esc(u.name) + '</b><small>' + esc(u.mobile) + ' - ' + esc(u.role) + '</small>' +
         '<span class="pill ' + (u.status === 'Active' ? 'green' : 'red') + '">' + esc(u.status) + '</span></span>' +
         '<span class="ur-btns"><button class="iconbtn" onclick="openEditUser(\'' + u.mobile + '\')">Edit</button>' +
         '<button class="iconbtn" onclick="openResetPin(\'' + u.mobile + '\')">PIN</button></span></div>';
@@ -937,7 +936,7 @@ function saveResetPin(){
   if (!/^\d{4,6}$/.test(p1)){ toast('PIN must be 4-6 digits.'); return; }
   if (p1 !== p2){ toast('PINs do not match.'); return; }
   call('updateUser', TOKEN, RP_MOBILE, { pin: p1 }).then(function(res){
-    if (res.success){ toast('PIN reset ?'); showScreen('users'); loadUsers(); }
+    if (res.success){ toast('PIN reset done.'); showScreen('users'); loadUsers(); }
     else toast(res.error || 'Failed.');
   });
 }
@@ -954,7 +953,7 @@ function saveFund(){
   call('updateFundPriority', TOKEN, DETAIL_ID, {
     fundType: val('fdType'), fundAmount: val('fdAmount'), priority: val('fdPriority')
   }).then(function(res){
-    if (res.success){ el('modalFund').classList.add('hidden'); toast('Fund & priority saved ?'); loadRecords(false); }
+    if (res.success){ el('modalFund').classList.add('hidden'); toast('Fund and priority saved.'); loadRecords(false); }
     else toast(res.error || 'Failed.');
   });
 }
@@ -988,18 +987,18 @@ function exportCsv(){
 function printReport(){
   var r = findRec(DETAIL_ID); if (!r) return;
   var thumb = driveThumb(r.photoUrl, 800);
-  var html = '<div class="printable"><h1>Gazole Block, Malda — Scheme Proposal</h1>' +
-    '<p><b>' + esc(r.id) + '</b> · ' + esc(r.status) + ' · Printed ' + fmtDate(new Date().toISOString()) + '</p>' +
+  var html = '<div class="printable"><h1>Gazole Block, Malda - Scheme Proposal</h1>' +
+    '<p><b>' + esc(r.id) + '</b> - ' + esc(r.status) + ' - Printed ' + fmtDate(new Date().toISOString()) + '</p>' +
     (thumb ? '<img src="' + thumb + '">' : '') +
     '<h2>Proposal</h2><p><b>' + esc(r.schemeName) + '</b></p>' +
-    '<p>GP: ' + esc(r.gp) + ' · Village: ' + esc(r.village) + (r.para ? ' (' + esc(r.para) + ')' : '') + '</p>' +
-    '<p>Scheme Type: ' + esc(typeLabel(r.schemeType)) + ' · Nature of Work: ' + esc(r.natureOfWork) + (r.natureOfWorkOther ? ' (' + esc(r.natureOfWorkOther) + ')' : '') + '</p>' +
+    '<p>GP: ' + esc(r.gp) + ' - Village: ' + esc(r.village) + (r.para ? ' (' + esc(r.para) + ')' : '') + '</p>' +
+    '<p>Scheme Type: ' + esc(typeLabel(r.schemeType)) + ' - Nature of Work: ' + esc(r.natureOfWork) + (r.natureOfWorkOther ? ' (' + esc(r.natureOfWorkOther) + ')' : '') + '</p>' +
     '<h2>Land Records</h2><table><tr><td>Mouza & JL</td><td>' + esc(r.mouzaJl) + '</td><td>Plot No.</td><td>' + esc(r.plotNo) + '</td></tr>' +
-    '<tr><td>Khatiyan</td><td>' + esc(r.khatiyan || '—') + '</td><td>Owner</td><td>' + esc(r.ownerName) + '</td></tr>' +
-    '<tr><td>Classification</td><td>' + esc(r.classification || '—') + '</td><td>Belongs To</td><td>' + esc(r.landBelongsTo) + '</td></tr></table>' +
-    '<h2>Beneficiaries</h2><p>SC ' + (r.benefSC||0) + ' · ST ' + (r.benefST||0) + ' · General ' + (r.benefGeneral||0) + ' · Minority ' + (r.benefMinority||0) + ' · Total ' + (r.totalBenef||0) + '</p>' +
-    '<h2>Location</h2><p>Lat ' + esc(r.lat) + ', Lng ' + esc(r.lng) + ' · ' + esc(r.location || '') + '</p>' +
-    '<h2>Fund</h2><p>' + esc(r.fundType || '—') + (r.fundAmount !== '' && r.fundAmount !== undefined ? ' · ?' + Number(r.fundAmount).toLocaleString('en-IN') : '') + (r.priority !== '' && r.priority !== undefined ? ' · Priority ' + esc(r.priority) : '') + '</p>' +
+    '<tr><td>Khatiyan</td><td>' + esc(r.khatiyan || '-') + '</td><td>Owner</td><td>' + esc(r.ownerName) + '</td></tr>' +
+    '<tr><td>Classification</td><td>' + esc(r.classification || '-') + '</td><td>Belongs To</td><td>' + esc(r.landBelongsTo) + '</td></tr></table>' +
+    '<h2>Beneficiaries</h2><p>SC ' + (r.benefSC||0) + ' - ST ' + (r.benefST||0) + ' - General ' + (r.benefGeneral||0) + ' - Minority ' + (r.benefMinority||0) + ' - Total ' + (r.totalBenef||0) + '</p>' +
+    '<h2>Location</h2><p>Lat ' + esc(r.lat) + ', Lng ' + esc(r.lng) + ' - ' + esc(r.location || '') + '</p>' +
+    '<h2>Fund</h2><p>' + esc(r.fundType || '-') + (r.fundAmount !== '' && r.fundAmount !== undefined ? ' - Rs. ' + Number(r.fundAmount).toLocaleString('en-IN') : '') + (r.priority !== '' && r.priority !== undefined ? ' - Priority ' + esc(r.priority) : '') + '</p>' +
     '<br><br><p>______________________&nbsp;&nbsp;&nbsp;&nbsp;______________________</p>' +
     '<p>Surveyor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Block Development Officer</p>' +
     '</div>';
@@ -1106,14 +1105,14 @@ function bindEvents(){
   el('auSave').onclick = function(){
     call('createUser', TOKEN, { mobile: val('auMobile'), pin: val('auPin'), name: val('auName'), role: val('auRole') })
       .then(function(res){
-        if (res.success){ el('modalAddUser').classList.add('hidden'); toast('Login created ?'); loadUsers(); }
+        if (res.success){ el('modalAddUser').classList.add('hidden'); toast('Login created.'); loadUsers(); }
         else toast(res.error || 'Failed.');
       });
   };
   el('euSave').onclick = function(){
     call('updateUser', TOKEN, val('euMobile'), { name: val('euName'), status: val('euStatus') })
       .then(function(res){
-        if (res.success){ el('modalEditUser').classList.add('hidden'); toast('User updated ?'); loadUsers(); }
+        if (res.success){ el('modalEditUser').classList.add('hidden'); toast('User updated.'); loadUsers(); }
         else toast(res.error || 'Failed.');
       });
   };
@@ -1131,7 +1130,7 @@ function bindEvents(){
   el('pfConnectBtn').onclick = function(){
     var url = val('pfConnectUrl'); if (!url){ toast('Paste a Sheet URL/ID first.'); return; }
     call('connectToSpreadsheet', TOKEN, url).then(function(res){
-      if (res.success){ toast('Connected to ' + res.sheetName + ' ? (' + (res.records || 0) + ' records)'); loadRecords(false); }
+      if (res.success){ toast('Connected to ' + res.sheetName + ' (' + (res.records || 0) + ' records).'); loadRecords(false); }
       else toast(res.error || 'Failed.');
     });
   };
