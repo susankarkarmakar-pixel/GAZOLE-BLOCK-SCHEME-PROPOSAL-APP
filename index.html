@@ -73,7 +73,7 @@
     <!-- ========== RECORDS LIST ========== -->
     <section id="screen-records" class="screen">
       <div class="searchbar"><i class="ic" data-ic="search"></i>
-        <input id="recSearch" placeholder="Search records by scheme name, GP, or village…"></div>
+        <input id="recSearch" placeholder="Search records by scheme name, GP, or village..."></div>
       <div class="rowline">
         <div class="scopes">
           <button id="scopeAll" class="chip active">All</button>
@@ -89,12 +89,12 @@
           <div class="field"><label>Sort</label>
             <select id="fltSort">
               <option value="new">Newest First</option>
-              <option value="priority">Priority (do first ? last)</option>
+              <option value="priority">Priority (do first - last)</option>
             </select></div>
         </div>
         <div class="rowline">
           <button class="btn ghost" id="fltClear">Clear Filters</button>
-          <button class="btn ghost" id="fltCsv">? Export CSV</button>
+          <button class="btn ghost" id="fltCsv">Export CSV</button>
         </div>
       </div>
       <div id="recSummary" class="summary"></div>
@@ -128,23 +128,23 @@
         <div class="grid2">
           <div class="field"><label>District</label><input value="Malda" disabled></div>
           <div class="field"><label>Block</label><input value="Gazole" disabled></div>
-          <div class="field"><label>GP <b class="req">*</b></label><select id="fGp"><option value="">Select…</option></select></div>
+          <div class="field"><label>GP <b class="req">*</b></label><select id="fGp"><option value="">Select...</option></select></div>
           <div class="field"><label>Village <b class="req">*</b></label><input id="fVillage" placeholder="Type village name"></div>
           <div class="field"><label>Para / Mahalla</label><input id="fPara" placeholder="Optional"></div>
         </div>
       </div>
 
       <div class="card"><h3>2. Scheme Details</h3>
-        <div class="field"><label>Scheme Type <b class="req">*</b></label><select id="fSchemeType"><option value="">Select…</option></select></div>
+        <div class="field"><label>Scheme Type <b class="req">*</b></label><select id="fSchemeType"><option value="">Select...</option></select></div>
         <div class="grid2 hidden" id="roadFields">
           <div class="field"><label>Starting Point <b class="req">*</b></label><input id="fStartPoint" placeholder="e.g. Sukumar Mondal's house"></div>
           <div class="field"><label>End Point <b class="req">*</b></label><input id="fEndPoint" placeholder="e.g. Haren Sarkar's house"></div>
         </div>
         <div class="field hidden" id="venueField"><label>Venue / Institution / Location <b class="req">*</b></label><input id="fVenue" placeholder="e.g. Alal FP School"></div>
         <div class="grid2">
-          <div class="field" id="natureField"><label>Nature of Work <b class="req">*</b></label><select id="fNature"><option value="">Select…</option></select></div>
+          <div class="field" id="natureField"><label>Nature of Work <b class="req">*</b></label><select id="fNature"><option value="">Select...</option></select></div>
           <div class="field hidden" id="natureOtherField"><label>Specify <b class="req">*</b></label><input id="fNatureOther"></div>
-          <div class="field"><label>Estimated Cost (?)</label><input id="fEstCost" inputmode="numeric" placeholder="Optional"></div>
+          <div class="field"><label>Estimated Cost (Rs.)</label><input id="fEstCost" inputmode="numeric" placeholder="Optional"></div>
         </div>
         <div class="field" id="schemeNameField"><label>Scheme Name</label>
           <input id="fSchemeName" readonly placeholder="Auto-generated">
@@ -158,7 +158,7 @@
         </div>
         <button class="btn ghost" id="btnGeo"><i class="ic" data-ic="pin"></i> Use My Location</button>
         <div class="field" style="margin-top:10px"><label>Site Photo <b class="req">*</b></label>
-          <button type="button" class="btn ghost" id="btnPhoto" onclick="openPhotoModal()">?? Add Site Photo (Camera / Gallery)</button>
+          <button type="button" class="btn ghost" id="btnPhoto" onclick="openPhotoModal()">Add Site Photo (Camera / Gallery)</button>
           <input type="file" id="fPhoto" class="hidden" accept="image/*">
           <small id="photoNote" class="muted hidden">A photo is already saved for this record. Add a new one only to replace it.</small>
           <img id="photoPreview" class="hidden" alt="Site photo preview">
@@ -167,17 +167,17 @@
 
       <div class="card"><h3>4. Land Record Details</h3>
         <div class="grid2">
-          <div class="field"><label>Mouza <b class="req">*</b></label><select id="fMouza"><option value="">Select GP first…</option></select></div>
+          <div class="field"><label>Mouza <b class="req">*</b></label><select id="fMouza"><option value="">Select GP first...</option></select></div>
           <div class="field"><label>J.L. No. (auto)</label><input id="fJl" readonly placeholder="Auto"></div>
         </div>
-        <div class="field hidden" id="mouzaManualWrap"><label>Mouza (list-? ????) <b class="req">*</b></label>
+        <div class="field hidden" id="mouzaManualWrap"><label>Mouza (not in list?) <b class="req">*</b></label>
           <input id="fMouzaManual" placeholder="Type mouza name manually"></div>
         <div class="grid2">
           <div class="field"><label>Plot No. <b class="req">*</b></label><input id="fPlot" placeholder="Comma-separate if multiple"></div>
           <div class="field"><label>Khatiyan No.</label><input id="fKhatiyan"></div>
           <div class="field"><label>Recorded Classification</label><input id="fClassification" list="classList"></div>
           <div class="field"><label>Owner Name <b class="req">*</b></label><input id="fOwner"></div>
-          <div class="field"><label>Plot Belongs To <b class="req">*</b></label><select id="fLandBelongs"><option value="">Select…</option></select></div>
+          <div class="field"><label>Plot Belongs To <b class="req">*</b></label><select id="fLandBelongs"><option value="">Select...</option></select></div>
         </div>
         <datalist id="classList"></datalist>
       </div>
@@ -208,7 +208,7 @@
       <div class="grid2 stats">
         <div class="statcard accent-navy"><small>Total Schemes</small><b id="anTotal">0</b></div>
         <div class="statcard accent-navy"><small>Beneficiaries</small><b id="anBenef">0</b></div>
-        <div class="statcard accent-navy"><small>Est. Cost (Cr)</small><b id="anCost">?0</b></div>
+        <div class="statcard accent-navy"><small>Est. Cost (Cr)</small><b id="anCost">0</b></div>
         <div class="statcard accent-red"><small>Pending Approvals</small><b id="anPending">0</b></div>
       </div>
       <div class="card"><h3>Scheme Status</h3><div class="donutwrap"><div id="anDonut"></div><div id="anLegend"></div></div></div>
@@ -236,7 +236,7 @@
     <section id="screen-resetpin" class="screen">
       <button class="backlink" id="rpBack"><i class="ic" data-ic="back"></i> Back to User Management</button>
       <div class="card usercard accent">
-        <div class="avatar" id="rpAvatar">–</div>
+        <div class="avatar" id="rpAvatar">-</div>
         <div class="ucol"><b id="rpName"></b><small id="rpRole"></small><small id="rpMobile"></small>
           <span class="pill green" id="rpStatus">ACTIVE</span></div>
       </div>
@@ -256,20 +256,20 @@
     <!-- ========== PROFILE ========== -->
     <section id="screen-profile" class="screen">
       <div class="card usercard accent">
-        <div class="avatar" id="pfAvatar">–</div>
+        <div class="avatar" id="pfAvatar">-</div>
         <div class="ucol"><b id="pfName"></b><small id="pfRole"></small><small id="pfMobile"></small></div>
       </div>
       <button class="btn ghost block" id="pfSync"><i class="ic" data-ic="sync"></i> Sync Data</button>
       <div id="pfAdminBox" class="hidden">
         <div class="card"><h3>Data Location (Admin)</h3>
-          <p class="muted">Data: <a id="pfSheetLink" href="#" target="_blank">Sheet</a> · Photos: <a id="pfFolderLink" href="#" target="_blank">Drive folder</a></p>
+          <p class="muted">Data: <a id="pfSheetLink" href="#" target="_blank">Sheet</a> - Photos: <a id="pfFolderLink" href="#" target="_blank">Drive folder</a></p>
           <div class="field"><label>Wrong data showing? Connect a different Sheet</label>
             <input id="pfConnectUrl" placeholder="Paste Sheet URL or ID"></div>
           <button class="btn primary block" id="pfConnectBtn">Connect</button>
         </div>
       </div>
       <button class="btn danger block" id="pfLogout"><i class="ic" data-ic="logout"></i> Logout</button>
-      <p class="hint center">Gazole Scheme Proposal App · v4</p>
+      <p class="hint center">Gazole Scheme Proposal App - v4</p>
     </section>
 
   </main>
@@ -304,29 +304,29 @@
 
 <div id="modalFund" class="modal hidden"><div class="modal-card">
   <div class="mhead"><b>Assign Fund &amp; Priority</b><button class="iconbtn" data-close="modalFund">×</button></div>
-  <div class="field"><label>Fund Type</label><select id="fdType"><option value="">—</option></select></div>
-  <div class="field"><label>Fund Amount (?)</label><input id="fdAmount" inputmode="numeric"></div>
+  <div class="field"><label>Fund Type</label><select id="fdType"><option value="">-</option></select></div>
+  <div class="field"><label>Fund Amount (Rs.)</label><input id="fdAmount" inputmode="numeric"></div>
   <div class="field"><label>Priority (1 = do first, blank = not prioritized)</label><input id="fdPriority" inputmode="numeric"></div>
   <button class="btn primary block" id="fdSave">Save</button>
 </div></div>
 
 <!-- ========== PHOTO CAPTURE POPUP ========== -->
 <div id="modalPhoto" class="modal hidden"><div class="modal-card">
-  <div class="mhead"><b>?? Site Photo</b><button class="iconbtn" onclick="closePhotoModal()">×</button></div>
+  <div class="mhead"><b>Site Photo</b><button class="iconbtn" onclick="closePhotoModal()">×</button></div>
   <div id="pcChoose" class="pc-choose">
-    <button class="btn primary" onclick="pcStartCamera()">?? Camera</button>
-    <button class="btn ghost" onclick="pcPickGallery()">?? Upload from Gallery</button>
-    <p class="muted center pc-hint">Camera ????? page-?? ?????? camera ????? — page refresh ??? ???</p>
+    <button class="btn primary" onclick="pcStartCamera()">Camera</button>
+    <button class="btn ghost" onclick="pcPickGallery()">Upload from Gallery</button>
+    <p class="muted center pc-hint">Camera opens inside the app - the page will not refresh.</p>
   </div>
   <div id="pcCamWrap" class="hidden">
     <video id="pcVideo" autoplay playsinline muted></video>
-    <div class="pc-cambtns"><button class="btn primary" onclick="pcCapture()">?</button></div>
+    <div class="pc-cambtns"><button class="btn primary" onclick="pcCapture()"><i class="ic" data-ic="camera"></i></button></div>
   </div>
   <div id="pcPreviewWrap" class="hidden">
     <img id="pcPreview" alt="Photo preview">
     <div class="pc-okbtns">
-      <button class="btn ghost" onclick="pcRetake()">? Retake</button>
-      <button class="btn primary" onclick="pcUsePhoto()">? OK – Use Photo</button>
+      <button class="btn ghost" onclick="pcRetake()">Retake</button>
+      <button class="btn primary" onclick="pcUsePhoto()">OK - Use Photo</button>
     </div>
   </div>
   <input type="file" id="pcFile" accept="image/*" class="hidden">
