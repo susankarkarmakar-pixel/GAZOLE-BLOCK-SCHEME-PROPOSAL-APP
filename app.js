@@ -270,7 +270,7 @@ function refreshCurrentView(){
 
 /* ---------- HOME ---------- */
 function renderHome(){
-  el('homeWelcome').innerText = 'Welcome, ' + USER.name + (USER.role === 'Admin' ? ' (BDO)' : '');
+  el('homeWelcome').innerText = 'Welcome, ' + USER.name + (USER.role === 'Admin' ? ' (Admin)' : '');
   var today = 0, pending = 0, active = 0;
   var tstr = new Date().toDateString();
   RECORDS.forEach(function(r){

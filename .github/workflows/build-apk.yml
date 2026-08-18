@@ -31,7 +31,7 @@ jobs:
           npm install -D @capacitor/cli@6
           mkdir -p www
           cp index.html styles.css app.js offline.js logo.png www/
-          npx cap init "Gazole Scheme" com.gazole.scheme --web-dir www
+          npx cap init "Gazole Scheme Proposal App" com.gazole.scheme --web-dir www
           npm install @capacitor/android@6
           npx cap add android
 
