@@ -130,7 +130,7 @@ function initials(name){
   var parts = String(name || '').trim().split(/\s+/);
   return ((parts[0]||'').charAt(0) + (parts[1]||'').charAt(0)).toUpperCase() || '-';
 }
-var AVCOLORS = [['#DCE7F5','#FF6600'],['#FCE4CC','#B05C10'],['#E5F5EC','#1B7F4D'],['#FBE9E7','#C0392B'],['#EFE6F7','#6B21A8']];
+var AVCOLORS = [['#DCE7F5','#E25822'],['#FCE4CC','#B05C10'],['#E5F5EC','#1B7F4D'],['#FBE9E7','#C0392B'],['#EFE6F7','#6B21A8']];
 function avColor(name){ var h = 0, s = String(name||''); for (var i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) % 997; return AVCOLORS[h % AVCOLORS.length]; }
 
 /* ---------- router ---------- */
@@ -423,7 +423,7 @@ function mapSvg(r){
     '<rect x="18" y="14" width="110" height="60" rx="6" fill="#DCE8CC"/>' +
     '<rect x="250" y="90" width="130" height="64" rx="6" fill="#D3E3BF"/>' +
     '<rect x="150" y="30" width="90" height="46" rx="6" fill="#E2EDD4"/>' +
-    '<path d="M40 130 C 120 60, 260 140, 360 45" stroke="#FF6600" stroke-width="4" fill="none" stroke-dasharray="8 6"/>' +
+    '<path d="M40 130 C 120 60, 260 140, 360 45" stroke="#E25822" stroke-width="4" fill="none" stroke-dasharray="8 6"/>' +
     '<circle cx="40" cy="130" r="9" fill="#1B7F4D" stroke="#fff" stroke-width="3"/>' +
     '<circle cx="360" cy="45" r="9" fill="#C0392B" stroke="#fff" stroke-width="3"/>' +
     '<text x="52" y="146" font-size="11" fill="#333">Start</text>' +
@@ -829,7 +829,7 @@ function renderAnalytics(){
   var counts = { 'Active':0, 'In Progress':0, 'Completed':0, 'Pending Review':0 };
   list.forEach(function(r){ if (counts.hasOwnProperty(r.status)) counts[r.status]++; });
   var segs = [
-    { v: counts['Active'], c: '#FF6600', l: 'Active' },
+    { v: counts['Active'], c: '#E25822', l: 'Active' },
     { v: counts['In Progress'], c: '#B05C10', l: 'In Progress' },
     { v: counts['Completed'], c: '#BBD3F0', l: 'Completed' },
     { v: counts['Pending Review'], c: '#E6A817', l: 'Pending Review' }
@@ -884,7 +884,7 @@ function donutSvg(segs, total, centerText){
       'stroke-dasharray="' + dash + ' ' + (c - dash) + '" stroke-dashoffset="' + (-acc * c) + '" transform="rotate(-90 80 80)"/>';
     acc += frac;
   });
-  svg += '<text x="80" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#FF6600">' + centerText + '</text></svg>';
+  svg += '<text x="80" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#E25822">' + centerText + '</text></svg>';
   return svg;
 }
 
