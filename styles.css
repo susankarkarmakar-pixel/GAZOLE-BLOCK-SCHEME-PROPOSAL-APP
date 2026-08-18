@@ -1,6 +1,6 @@
 /* ============ GAZOLE SCHEME PROPOSAL APP - v4 design system ============ */
 :root{
-  --primary:#FF6600; --primary2:#CC5200; --ink:#16283C; --muted:#64748B; --muted2:#7A8698;
+  --primary:#E25822; --primary2:#B33C14; --ink:#16283C; --muted:#64748B; --muted2:#7A8698;
   --bg:#FFFFFF; --card:#FFFFFF; --line:#E3E8EF; --line2:#CBD5E1;
   --green:#1B7F4D; --greenbg:#E5F5EC; --amber:#B26A00; --amberbg:#FDF0DC;
   --red:#C0392B; --redbg:#FBE9E7; --orange:#E67E22; --blue:#1D4E89; --bluebg:#E3EDFA;
@@ -74,7 +74,7 @@ a{color:var(--blue)}
 .field input,.field select,.field textarea{width:100%; padding:10px 12px; border:1px solid var(--line2);
   border-radius:9px; font-size:14px; background:#fff; color:var(--ink); font-family:inherit}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none; border-color:var(--primary2);
-  box-shadow:0 0 0 3px rgba(255,102,0,.13)}
+  box-shadow:0 0 0 3px rgba(226,88,34,.13)}
 .field input:disabled{background:#EDF1F6; color:#8A94A2}
 .field input[type=file]{border:1.5px dashed var(--line2); background:#FAFCFE; font-size:13px; padding:9px}
 #photoPreview{max-width:170px; width:100%; border-radius:10px; margin-top:8px; border:1px solid var(--line)}
