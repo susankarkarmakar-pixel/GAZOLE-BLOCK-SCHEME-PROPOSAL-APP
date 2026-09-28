@@ -1,61 +1,66 @@
-<style>
-/* ============ v5.0 additions (Overview, Fund Planner, Access Control) ============ */
-.ix-kpis{gap:10px;margin-bottom:14px}
-.ix-kpis .statcard{margin-bottom:0}
-.ix-row{display:grid;grid-template-columns:104px 1fr auto;gap:8px;align-items:center;padding:6px 4px;border-radius:8px;cursor:pointer}
-.ix-row.sel{background:var(--bluebg)}
-.ix-lab{font-size:12.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ix-track{height:10px;border-radius:999px;background:#E5EAF1;overflow:hidden;display:block}
-.ix-fill{height:10px;border-radius:999px;background:var(--navy);display:block}
-.ix-val{font-size:12px;font-weight:700;color:var(--navy);text-align:right;white-space:nowrap;min-width:36px}
-.ix-row.zero .ix-lab,.ix-row.zero .ix-val{color:var(--muted2);font-weight:500}
-#ixDonut svg{width:180px;height:180px}
-.ix-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.ix-tbl{border-collapse:collapse;width:100%;font-size:12px;min-width:420px}
-.ix-tbl th,.ix-tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}
-.ix-tbl th{color:var(--muted);font-weight:700;background:#F7F9FC}
-.ix-tbl td:first-child,.ix-tbl th:first-child{text-align:left;position:sticky;left:0;background:#fff;font-weight:700;color:var(--ink)}
-.ix-tbl th:first-child{background:#F7F9FC}
-.ix-tbl tr.tot td{font-weight:800;color:var(--navy);background:#F7F9FC}
-.ix-badge{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
-.ix-days{display:flex;align-items:flex-end;gap:4px;height:120px}
-.ix-day{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}
-.ix-dbar{width:100%;max-width:18px;background:var(--navy);border-radius:4px 4px 0 0;display:block;min-height:2px}
-.ix-dn{font-size:10px;color:var(--muted);font-weight:700;min-height:12px}
-.ix-dl{font-size:10px;color:var(--muted2)}
-.denied{text-align:center;color:var(--muted);padding:26px 14px}
+/* features.js - GAZOLE SCHEME PROPOSAL APP v5.0 */
+var FX_CSS = [
+  ":root{--fx:var(--primary,#0B2C4D)}",
+  "",
+  "/* ============ v5.0 additions (Overview, Fund Planner, Access Control) ============ */",
+  ".ix-kpis{gap:10px;margin-bottom:14px}",
+  ".ix-kpis .statcard{margin-bottom:0}",
+  ".ix-row{display:grid;grid-template-columns:104px 1fr auto;gap:8px;align-items:center;padding:6px 4px;border-radius:8px;cursor:pointer}",
+  ".ix-row.sel{background:var(--bluebg)}",
+  ".ix-lab{font-size:12.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+  ".ix-track{height:10px;border-radius:999px;background:#E5EAF1;overflow:hidden;display:block}",
+  ".ix-fill{height:10px;border-radius:999px;background:var(--fx);display:block}",
+  ".ix-val{font-size:12px;font-weight:700;color:var(--fx);text-align:right;white-space:nowrap;min-width:36px}",
+  ".ix-row.zero .ix-lab,.ix-row.zero .ix-val{color:var(--muted2);font-weight:500}",
+  "#ixDonut svg{width:180px;height:180px}",
+  ".ix-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}",
+  ".ix-tbl{border-collapse:collapse;width:100%;font-size:12px;min-width:420px}",
+  ".ix-tbl th,.ix-tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}",
+  ".ix-tbl th{color:var(--muted);font-weight:700;background:#F7F9FC}",
+  ".ix-tbl td:first-child,.ix-tbl th:first-child{text-align:left;position:sticky;left:0;background:#fff;font-weight:700;color:var(--ink)}",
+  ".ix-tbl th:first-child{background:#F7F9FC}",
+  ".ix-tbl tr.tot td{font-weight:800;color:var(--fx);background:#F7F9FC}",
+  ".ix-badge{width:34px;height:34px;border-radius:50%;background:var(--fx);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}",
+  ".ix-days{display:flex;align-items:flex-end;gap:4px;height:120px}",
+  ".ix-day{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}",
+  ".ix-dbar{width:100%;max-width:18px;background:var(--fx);border-radius:4px 4px 0 0;display:block;min-height:2px}",
+  ".ix-dn{font-size:10px;color:var(--muted);font-weight:700;min-height:12px}",
+  ".ix-dl{font-size:10px;color:var(--muted2)}",
+  ".denied{text-align:center;color:var(--muted);padding:26px 14px}",
+  "",
+  "/* fund planner */",
+  ".fp-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}",
+  ".fp-card.dirty{border-left-color:var(--orange);background:#FFFBF4}",
+  ".fp-title{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.35}",
+  ".fp-meta{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--muted);font-size:12px;margin:6px 0 10px;align-items:center}",
+  ".fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}",
+  ".fp-grid .field{margin-bottom:0}",
+  "@media(max-width:360px){.fp-grid{grid-template-columns:1fr}}",
+  ".fp-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;flex-wrap:wrap}",
+  ".fp-savebar{position:fixed;left:0;right:0;bottom:64px;z-index:65;background:#fff;border-top:1px solid var(--line2);box-shadow:0 -4px 14px rgba(16,40,70,.14);display:flex;align-items:center;gap:8px;padding:8px 12px}",
+  ".fp-savebar span{flex:1;font-size:12.5px;font-weight:700;color:var(--fx)}",
+  ".fp-savebar .btn{margin:0;padding:9px 14px}",
+  ".warnline{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:600;margin-bottom:10px}",
+  "",
+  "/* access control */",
+  ".pm-group{font-size:11.5px;font-weight:800;color:var(--muted);margin:14px 0 2px}",
+  ".pm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}",
+  ".pm-t{flex:1;display:flex;flex-direction:column;gap:1px}",
+  ".pm-t b{font-size:13.5px;color:var(--ink)}",
+  ".pm-t small{font-size:11.5px;color:var(--muted2)}",
+  ".pm-tag{display:inline-block;background:var(--amberbg);color:var(--amber);font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:6px}",
+  ".pm-sw{-webkit-appearance:none;appearance:none;width:46px;height:26px;border-radius:999px;background:#CBD5E1;position:relative;cursor:pointer;flex:none;border:none;outline:none;transition:background .15s}",
+  ".pm-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 3px rgba(0,0,0,.3)}",
+  ".pm-sw:checked{background:var(--green)}",
+  ".pm-sw:checked::after{transform:translateX(20px)}",
+  ".pm-sw:focus-visible{box-shadow:0 0 0 3px rgba(18,57,91,.25)}",
+  ""
+].join("\n");
+(function(){ var s = document.createElement("style"); s.id = "features-css"; s.appendChild(document.createTextNode(FX_CSS)); document.head.appendChild(s); })();
 
-/* fund planner */
-.fp-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
-.fp-card.dirty{border-left-color:var(--orange);background:#FFFBF4}
-.fp-title{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.35}
-.fp-meta{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--muted);font-size:12px;margin:6px 0 10px;align-items:center}
-.fp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
-.fp-grid .field{margin-bottom:0}
-@media(max-width:360px){.fp-grid{grid-template-columns:1fr}}
-.fp-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;flex-wrap:wrap}
-.fp-savebar{position:fixed;left:0;right:0;bottom:64px;z-index:65;background:#fff;border-top:1px solid var(--line2);box-shadow:0 -4px 14px rgba(16,40,70,.14);display:flex;align-items:center;gap:8px;padding:8px 12px}
-.fp-savebar span{flex:1;font-size:12.5px;font-weight:700;color:var(--navy)}
-.fp-savebar .btn{margin:0;padding:9px 14px}
-.warnline{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:600;margin-bottom:10px}
-
-/* access control */
-.pm-group{font-size:11.5px;font-weight:800;color:var(--muted);margin:14px 0 2px}
-.pm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
-.pm-t{flex:1;display:flex;flex-direction:column;gap:1px}
-.pm-t b{font-size:13.5px;color:var(--ink)}
-.pm-t small{font-size:11.5px;color:var(--muted2)}
-.pm-tag{display:inline-block;background:var(--amberbg);color:var(--amber);font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:6px}
-.pm-sw{-webkit-appearance:none;appearance:none;width:46px;height:26px;border-radius:999px;background:#CBD5E1;position:relative;cursor:pointer;flex:none;border:none;outline:none;transition:background .15s}
-.pm-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.pm-sw:checked{background:var(--green)}
-.pm-sw:checked::after{transform:translateX(20px)}
-.pm-sw:focus-visible{box-shadow:0 0 0 3px rgba(18,57,91,.25)}
-</style>
-<script>
-/* ============ FEATURES v5.0 - loads AFTER JavaScript.html and PhotoCapture.html ============ */
-/* Adds: Project Overview (charts) - Fund & Priority Planner - Access Control (permissions).  */
-/* Nothing in JavaScript.html / Stylesheet.html / PhotoCapture.html has to be edited.         */
+/* ============ features.js v5.0 (GitHub Pages / APK version) - load AFTER app.js and offline.js ============ */
+/* Adds: Project Overview (charts) - Fund & Priority Planner - Access Control (permissions).            */
+/* app.js, offline.js and styles.css need no edit. Pure ASCII on purpose.                                */
 (function(){
 
 var CUR = 'home';
@@ -117,7 +122,7 @@ var METRICS = {
   benef: { fn: function(r){ return Number(r.totalBenef) || 0; }, fmt: function(v){ return xNum(v); } },
   cost:  { fn: function(r){ return Number(r.estimatedCost) || 0; }, fmt: xMoney }
 };
-var STATUS_COLORS = { 'Pending Review': '#E6A817', 'Active': '#0B2C4D', 'In Progress': '#B05C10', 'Completed': '#1B7F4D' };
+var STATUS_COLORS = { 'Pending Review': '#E6A817', 'Active': '#E25822', 'In Progress': '#1D4E89', 'Completed': '#1B7F4D' };
 
 function insRecs(except){
   return RECORDS.filter(function(r){
@@ -215,7 +220,7 @@ function renderInsights(){
     .filter(function(s){ return s.v > 0; });
   el('ixDonut').innerHTML = donutSvg(segs, stRecs.length, String(stRecs.length));
   el('ixLegend').innerHTML = '<div class="lg">' + CONFIG.statuses.map(function(s){
-    return '<span class="lg-item" data-chart="status" data-k="' + esc(s) + '" style="cursor:pointer' + (INS.status === s ? ';font-weight:800;color:#0B2C4D' : '') + '">' +
+    return '<span class="lg-item" data-chart="status" data-k="' + esc(s) + '" style="cursor:pointer' + (INS.status === s ? ';font-weight:800;color:#B33C14' : '') + '">' +
       '<span class="lg-dot" style="background:' + (STATUS_COLORS[s] || '#94A3B8') + '"></span>' + esc(s) + ' (' + sc[s] + ')</span>';
   }).join('') + '</div>';
 
@@ -262,7 +267,7 @@ function renderInsights(){
     mh += '<tr><td>' + esc(g) + '</td>';
     tcols.forEach(function(t){
       var c = cell[g + '|' + t] || 0; shown += c;
-      mh += c ? '<td style="background:rgba(11,44,77,' + (0.08 + 0.55 * c / maxc).toFixed(2) + ');color:' + (c / maxc > 0.55 ? '#fff' : '#16283C') + ';font-weight:700">' + c + '</td>' : '<td style="color:#B8C2D0">-</td>';
+      mh += c ? '<td style="background:rgba(226,88,34,' + (0.08 + 0.55 * c / maxc).toFixed(2) + ');color:' + (c / maxc > 0.55 ? '#fff' : '#16283C') + ';font-weight:700">' + c + '</td>' : '<td style="color:#B8C2D0">-</td>';
     });
     var tot = rowTot[g] || 0;
     mh += '<td>' + (tot - shown || '-') + '</td><td><b>' + (tot || '-') + '</b></td></tr>';
@@ -796,6 +801,7 @@ refreshCurrentView = function(){
 var _enter = enterApp;
 enterApp = function(){
   _enter();
+  buildUi();
   /* Scheme Type filter fix: the list stores labels, the old filter compared codes */
   el('fltType').innerHTML = '<option value="">All Scheme Types</option>' + CONFIG.schemeTypes.map(function(t){
     return '<option value="' + esc(t.label) + '">' + esc(t.label) + '</option>';
@@ -844,8 +850,6 @@ openForm = function(id){
   }
 };
 
-buildUi();
-if (USER) applyChrome();
+if (USER && CONFIG){ buildUi(); applyChrome(); }
 
 })();
-</script>
